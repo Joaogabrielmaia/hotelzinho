@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Escolinha</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="app-container">
+
+    <main class="main-content">
+
+      <header class="app-header">
+        <div class="header-title">
+          <i class="bi bi-clipboard2-check"></i>
+          <span>Cadastro de Alunos</span>
+        </div>
+        <div class="header-actions">
+          <button id="btnOpenSettings" class="btn btn-ghost">
+            <i class="bi bi-gear"></i>
+            <span class="d-none d-md-inline">Configurações</span>
+          </button>
+          <button id="btnClear" class="btn btn-ghost-danger">
+            <i class="bi bi-trash"></i>
+            <span class="d-none d-md-inline">Limpar Tudo</span>
+          </button>
+          <button id="btnLogout" class="btn btn-ghost">
+            <i class="bi bi-box-arrow-right"></i>
+            <span class="d-none d-md-inline">Sair</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="content-card fade-in">
+
+        <div class="content-card-body">
+          <form id="formAluno" novalidate>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Nome do Pai</label>
+                <input type="text" class="form-control form-control-app" id="paiNome" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Nome da Mãe</label>
+                <input type="text" class="form-control form-control-app" id="maeNome" required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Nome da Criança</label>
+                <input type="text" class="form-control form-control-app" id="criancaNome" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Data de Nascimento</label>
+                <input type="date" class="form-control form-control-app" id="criancaNascimento" required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">CPF</label>
+                <input type="text" class="form-control form-control-app" id="cpf" placeholder="000.000.000-00" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Telefone (pai ou mãe)</label>
+                <input type="tel" class="form-control form-control-app" id="telefone" placeholder="DD 00000-0000"
+                  required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">E-mail</label>
+                <input type="email" class="form-control form-control-app" id="email" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">CEP</label>
+                <input type="text" class="form-control form-control-app" id="cep" placeholder="00000-000" required>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Endereço</label>
+                <input type="text" class="form-control form-control-app" id="endereco" required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Pagamento da Mensalidade</label>
+                <select class="form-select form-control-app" id="mensalidade" required>
+                  <option value="sim">Sim</option>
+                  <option value="nao">Não</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Tipo de Pacote</label>
+                <select class="form-select form-control-app" id="pacote" required>
+                  <option value="diarista">Diarista</option>
+                  <option value="mensal">Mensal</option>
+                  <option value="trimestral">Trimestral</option>
+                  <option value="anual">Anual</option>
+                </select>
+              </div>
+
+              <div class="col-12 d-grid d-md-flex gap-2 mt-2">
+                <button class="btn btn-app-primary btn-elevate" type="submit">
+                  <i class="bi bi-save"></i> Salvar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="content-card fade-in">
+        <div class="content-card-header">
+          <h5 class="content-card-title">
+            <i class="bi bi-people"></i>
+            Alunos Cadastrados
+          </h5>
+          <div class="input-group search-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input class="form-control form-control-app" id="search" placeholder="Buscar por nome">
+          </div>
+        </div>
+        <div class="content-card-body">
+          <div id="listaAlunos" class="row g-3"></div>
+        </div>
+      </div>
+  </div>
+  </main>
+  </div>
+
+  <div class="modal fade" id="modalDetalhes" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content modal-glass">
+        <div class="modal-header">
+          <h5 class="modal-title">Ficha do Aluno</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <div id="detalhesConteudo"></div>
+        </div>
+        <div class="modal-footer">
+          <button id="btnEnviarSheet" class="btn btn-app-success btn-elevate">
+            <i class="bi bi-cloud-upload"></i> Enviar para Planilha
+          </button>
+          <button class="btn btn-ghost" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalSettings" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content modal-glass">
+        <div class="modal-header">
+          <h5 class="modal-title">Configurações</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <label class="form-label">URL do Web App do Google Apps Script</label>
+          <input type="url" class="form-control form-control-app mb-2" id="webAppUrl">
+          <div class="small text-muted">Cole a URL do deploy do Apps Script.</div>
+        </div>
+        <div class="modal-footer">
+          <button id="btnSaveSettings" class="btn btn-app-primary btn-elevate">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index:1080;">
+    <div id="toast" class="toast align-items-center text-bg-dark border-0" role="alert" aria-live="assertive"
+      aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="toastMsg">Pronto.</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>
